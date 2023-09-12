@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\AimsiaApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use GeneaLabs\LaravelSocialiter\Facades\Socialiter;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Auth;
+use Illuminate\Validation\ValidationException;
 use Storage;
 
 class LoginController extends Controller
@@ -224,10 +226,18 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'email'    => 'required_without:phone',
-            'phone'    => 'required_without:email',
+            'email'    => 'required|string|email',
             'password' => 'required|string',
         ]);
+
+        // Login user through api
+        $api = new AimsiaApi();
+        $res = $api->sendRequest('POST', '/login', $request->all());
+
+        if (isset($res->result) && $res->result == false && !isset($res->user)) {
+            flash(translate($res->message))->error();
+            throw ValidationException::withMessages((array)$res->message);
+        }
     }
 
     /**

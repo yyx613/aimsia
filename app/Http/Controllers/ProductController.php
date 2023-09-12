@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\AimsiaApi;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -20,6 +21,7 @@ use App\Services\ProductService;
 use App\Services\ProductTaxService;
 use App\Services\ProductFlashDealService;
 use App\Services\ProductStockService;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -197,33 +199,51 @@ class ProductController extends Controller
         ]));
         $request->merge(['product_id' => $product->id]);
 
-        //VAT & Tax
-        if($request->tax_id) {
-            $this->productTaxService->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+        // Create product through api
+        $form = [
+            'platform_id' => config('aimsia.platform_id'),
+            'extern_id' => $product->id,
+            'name' => $request->input('name') ?? '',
+            'price' => $request->input('unit_price') ?? '',
+        ];
+        $api = new AimsiaApi();
+        $res = $api->sendRequest('POST', '/manage/product', $form);
+
+        if (isset($res->result) && $res->result == false) {
+            // Remove created product from ecom
+            $this->destroy($product->id, false, false);
+
+            flash(translate('Failed to create product'))->error();
+            return back();
+        } else {
+            //VAT & Tax
+            if($request->tax_id) {
+                $this->productTaxService->store($request->only([
+                    'tax_id', 'tax', 'tax_type', 'product_id'
+                ]));
+            }
+    
+            //Flash Deal
+            $this->productFlashDealService->store($request->only([
+                'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            ]), $product);
+    
+            //Product Stock
+            $this->productStockService->store($request->only([
+                'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
+            ]), $product);
+    
+            // Product Translations
+            $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
+            ProductTranslation::create($request->only([
+                'lang', 'name', 'unit', 'description', 'product_id'
             ]));
+    
+            flash(translate('Product has been inserted successfully'))->success();
+    
+            Artisan::call('view:clear');
+            Artisan::call('cache:clear');
         }
-
-        //Flash Deal
-        $this->productFlashDealService->store($request->only([
-            'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
-
-        //Product Stock
-        $this->productStockService->store($request->only([
-            'colors_active', 'colors', 'choice_no', 'unit_price', 'sku', 'current_stock', 'product_id'
-        ]), $product);
-
-        // Product Translations
-        $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
-        ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
-        ]));
-
-        flash(translate('Product has been inserted successfully'))->success();
-
-        Artisan::call('view:clear');
-        Artisan::call('cache:clear');
 
         return redirect()->route('products.admin');
     }
@@ -347,27 +367,49 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $return_msg=true, $call_api=true)
     {
-        $product = Product::findOrFail($id);
+        $api_deleted_product = false;
 
-        $product->product_translations()->delete();
-        $product->stocks()->delete();
-        $product->taxes()->delete();
-
-        if (Product::destroy($id)) {
-            Cart::where('product_id', $id)->delete();
-
-            flash(translate('Product has been deleted successfully'))->success();
-
-            Artisan::call('view:clear');
-            Artisan::call('cache:clear');
-
-            return back();
-        } else {
-            flash(translate('Something went wrong'))->error();
-            return back();
+        if ($call_api) {
+            // Create product through api
+            $form = [
+                'platform_id' => config('aimsia.platform_id'),
+                'extern_id' => $id,
+            ];
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('GET', '/manage/product/delete', $form);
+            
+            if (isset($res->result) && $res->result == false) {
+                flash(translate('Failed to delete product'))->error();
+                return back();
+            }
+            $api_deleted_product = true;
         }
+        
+        if ( ($call_api == false) || ($call_api == true && $api_deleted_product) ) {
+            $product = Product::findOrFail($id);
+    
+            $product->product_translations()->delete();
+            $product->stocks()->delete();
+            $product->taxes()->delete();
+    
+            if (Product::destroy($id)) {
+                Cart::where('product_id', $id)->delete();
+    
+                if ($return_msg) {
+                    flash(translate('Product has been deleted successfully'))->success();
+                }
+    
+                Artisan::call('view:clear');
+                Artisan::call('cache:clear');
+    
+                return back();
+            }
+        }
+
+        flash(translate('Something went wrong'))->error();
+        return back();
     }
 
     public function bulk_product_delete(Request $request)
@@ -395,6 +437,24 @@ class ProductController extends Controller
         $product_new->slug = $product_new->slug . '-' . Str::random(5);
         $product_new->save();
         
+        // Create product through api
+        $form = [
+            'platform_id' => config('aimsia.platform_id'),
+            'extern_id' => $product_new->id,
+            'name' => $product_new->name?? '',
+            'price' => $product_new->unit_price ?? '',
+            'status' => $product_new->status
+        ];
+        $api = new AimsiaApi();
+        $res = $api->sendRequest('POST', '/manage/product', $form);
+
+        if (isset($res->result) && $res->result == false) {
+            // Remove created product from ecom
+            $this->destroy($product->id, false, false);
+
+            flash(translate('Failed to duplicate product'))->error();
+            return back();
+        }
         //Product Stock
         $this->productStockService->product_duplicate_store($product->stocks, $product_new);
 

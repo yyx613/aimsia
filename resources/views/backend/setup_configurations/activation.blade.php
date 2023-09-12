@@ -162,7 +162,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
+    <!-- <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
                 <h3 class="mb-0 h6 text-center">{{translate('Email Verification')}}</h3>
@@ -177,7 +177,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">

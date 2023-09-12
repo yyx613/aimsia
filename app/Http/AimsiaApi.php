@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Http;
+
+use DB;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Session;
 use Log;
@@ -11,13 +14,10 @@ class AimsiaApi {
     public function sendRequest($method, $endpoint, $form):object {
         if (Session::has(self::ACCESS_TOKEN_SESSION_KEY)) {
             $access_token = Session::get(self::ACCESS_TOKEN_SESSION_KEY);
-            Log::info('if');
         } else {
             $access_token = $this->generateAccessToken();
             Session::put(self::ACCESS_TOKEN_SESSION_KEY, $access_token);
-            Log::info('else');
         }
-        // $access_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5OTFiYmJiNC1kMWQ1LTQzZGQtYTIwMi05ODdkNmJmNzViZDgiLCJqdGkiOiI3NjBmNmNmYmY3NjZiODMzYzllYmZhNDY4OWQ1OTViZjc5ODBkOTFiZDZlNjk5NmVlNzA0Y2ZhZDQwZmJhMDkwNDY4OGM3NzhjMWRiMGU2MiIsImlhdCI6MTY5NDMzMDc2OC43MjIyODEsIm5iZiI6MTY5NDMzMDc2OC43MjIyODMsImV4cCI6MTY5NDQxNzE2OC42Njc2NTYsInN1YiI6IjEiLCJzY29wZXMiOlsiQXV0aC1Vc2VyIl19.wZKavmdd7btCaloHyqwegblFG1mvGxMPpOwswMwk4b_a-utRAn3DMG8VxggvK4KcRM1x2fRgK9eYCPdZDzIdfIr52v0pXCQ2N0aVbeoJSJ_t3aZn92pDRHLVQrBdH3iD09IFMLtnmVDnP56lZ2KoicXFXUAq9_-cMrWOU1cJXK8pNUqL9cwzQzNzxr-N5xC4wZivvjK3zCHiWdZPVFXQADTD5K5lzeUlxRq23zc_WIMZKVJ3eneHOuTSUc8UunabPFeuerq9ljpjh664dQPQwPtIXd3NPC5eERBpBRaYszyYaQNfYexOEwHghGguaqiW6VZEDv8t-fxJ_pMBAeS59URU_d3BYF5xoilvetlejzLst84TKBuNAdsHgHP6oaogCdcxpOmSQcX5L1tUwErSQ2m9aZGXJxP0XAWVUSJIJY8rKtIoX4vlx8Mfpaf2qFHVVSy_Qy6Z3Z8F9meHKz9rWyi2wYJlH47QfdOOwTFm7RceA4mp-r-Gt1NndNfhazZWhgDr1RGr0txROSAul_XQGUzA5814BmNztXjOH1oVbSyg1tasUu5Siv2dnJD18i2jxfCmg2otyNYWIuDa--8DFONfuKIlROcE9f1BsIK5clIdsKYTSS_d6_l8IJ_l64BoOzzL2nHrTK8q9O23i7KbFS7xqe7ZWByBrurQE2n49dU';
 
         $headers = [
             'Authorization' => 'Bearer ' . $access_token,
@@ -29,16 +29,32 @@ class AimsiaApi {
         $api_url = config('aimsia.api_url') . '/api/v1' . $endpoint;
         
        try {
-            $res = $client->request($method, $api_url, [
-                'form_params' => $form
-            ]);
+            if ($method == 'POST') {
+                $res = $client->request($method, $api_url, [
+                    'form_params' => $form
+                ]);
+            } else {
+                $res = $client->request($method, $api_url, [
+                    'query' => $form
+                ]);
+            }
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             $res = $e->getResponse();
         } catch (\GuzzleHttp\Exception\ServerException $e) {
             $res = $e->getResponse();
         }
+        $res_content = $res->getBody()->getContents();
 
-        return json_decode($res->getBody()->getContents());
+        DB::table('aimsia_api')->insert([
+            'method' => $method,
+            'url' => $api_url,
+            'request' => json_encode($form),
+            'response' => $res_content,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        return json_decode($res_content);
     }
 
     private function generateAccessToken(): ?string {

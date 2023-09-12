@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\AimsiaApi;
 use Nexmo;
 use Cookie;
 use Session;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Http\Controllers\OTPVerificationController;
 use App\Notifications\EmailVerificationNotification;
+use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {
@@ -66,6 +68,7 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
             'password' => 'required|string|min:6|confirmed',
             'g-recaptcha-response' => [
                 Rule::when(get_setting('google_recaptcha') == 1, ['required', new Recaptcha()], ['sometimes'])
@@ -139,6 +142,18 @@ class RegisterController extends Controller
 
         $this->validator($request->all())->validate();
 
+        // Register user through api
+        $api = new AimsiaApi();
+        $res = $api->sendRequest('POST', '/signup', $request->all());
+
+        if (isset($res->result) && $res->result == false) {
+            if (gettype($res->message) == 'string') {
+                flash(translate($res->message))->error();
+                return back();
+            }
+            throw ValidationException::withMessages((array)$res->message);
+        }
+
         $user = $this->create($request->all());
 
         $this->guard()->login($user);
@@ -151,7 +166,6 @@ class RegisterController extends Controller
             }
             else {
                 try {
-                    $user->sendEmailVerificationNotification();
                     flash(translate('Registration successful. Please verify your email.'))->success();
                 } catch (\Throwable $th) {
                     $user->delete();
