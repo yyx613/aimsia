@@ -84,6 +84,12 @@
                                                     <input type="password" class="form-control rounded-0" placeholder="{{  translate('Confirm Password') }}" name="password_confirmation">
                                                 </div>
 
+                                                <!-- referrer code -->
+                                                <div class="form-group">
+                                                    <label for="referrer" class="fs-12 fw-700 text-soft-dark">{{  translate('Referrer Code') }}</label>
+                                                    <input type="text" class="form-control rounded-0" placeholder="{{  translate('Referrer Code') }}" name="referrer">
+                                                </div>
+
                                                 <!-- Recaptcha -->
                                                 @if(get_setting('google_recaptcha') == 1)
                                                     <div class="form-group">
