@@ -25,6 +25,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Http\Controllers\OTPVerificationController;
 use App\Notifications\EmailVerificationNotification;
 use Illuminate\Validation\ValidationException;
+use Log;
 
 class RegisterController extends Controller
 {
@@ -82,13 +83,14 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    public function create(array $data)
     {
         if (filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
+                'user_type' => isset($data['user_type']) ? $data['user_type'] : 'customer'
             ]);
         }
         else {

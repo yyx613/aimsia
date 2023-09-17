@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Auth;
+use DB;
 use Illuminate\Validation\ValidationException;
 use Log;
 use Storage;
@@ -240,6 +241,24 @@ class LoginController extends Controller
             throw ValidationException::withMessages((array)$res->message);
         }
 
+        // Create user in ecom if not exists
+        if (!User::where('email', $res->user->email)->exists()) {
+            $data = [
+                'name' => $res->user->name,
+                'email' => $res->user->email,
+                'password' => $request->input('password'),
+                'user_type' => $res->user->type == 1 ? 'staff' : 'customer'
+            ];
+            $created_user = (new RegisterController)->create($data);
+            // Add user role & permission
+            if(User::where('user_type', 'staff')->count() <= 1) {
+                DB::table('model_has_roles')->insert([
+                    'role_id' => 3,
+                    'model_type' => 'App\Models\User',
+                    'model_id' => $created_user->id,
+                ]);
+            }
+        }
         // Update ecom user's account verified
         if ($res->user->email_verified_at != null) {
             User::where('email', $request->input('email'))->update([
@@ -319,7 +338,7 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         if (auth()->user() != null && (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')) {
-            $redirect_route = 'login';
+            $redirect_route = 'user.login';
         } else {
             $redirect_route = 'home';
         }

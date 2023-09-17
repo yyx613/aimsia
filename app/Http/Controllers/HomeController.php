@@ -61,9 +61,11 @@ class HomeController extends Controller
         }
 
         if(Route::currentRouteName() == 'seller.login' && get_setting('vendor_system_activation') == 1){
-            return view('frontend.seller_login');
+            return view('frontend.user_login');
+            // return view('frontend.seller_login');
         }else if(Route::currentRouteName() == 'deliveryboy.login' && addon_is_activated('delivery_boy')){
-            return view('frontend.deliveryboy_login');
+            return view('frontend.user_login');
+            // return view('frontend.deliveryboy_login');
         }
         return view('frontend.user_login');
     }
