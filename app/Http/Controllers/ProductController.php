@@ -44,7 +44,7 @@ class ProductController extends Controller
         // Staff Permission Check
         $this->middleware(['permission:add_new_product'])->only('create');
         $this->middleware(['permission:show_all_products'])->only('all_products');
-        $this->middleware(['permission:show_in_house_products'])->only('admin_products');
+        // $this->middleware(['permission:show_in_house_products'])->only('admin_products');
         $this->middleware(['permission:show_seller_products'])->only('seller_products');
         $this->middleware(['permission:product_edit'])->only('admin_product_edit','seller_product_edit');
         $this->middleware(['permission:product_duplicate'])->only('duplicate');
@@ -535,7 +535,7 @@ class ProductController extends Controller
 
     public function updatePublished(Request $request)
     {
-        // Create product through api
+        // Check product status through api
         if ($request->boolean('status') == true) {
             $form = [
                 'platform_id' => config('aimsia.platform_id'),
