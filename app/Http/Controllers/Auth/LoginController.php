@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Auth;
 use Illuminate\Validation\ValidationException;
+use Log;
 use Storage;
 
 class LoginController extends Controller
@@ -237,6 +238,13 @@ class LoginController extends Controller
         if (isset($res->result) && $res->result == false && !isset($res->user)) {
             flash(translate($res->message))->error();
             throw ValidationException::withMessages((array)$res->message);
+        }
+
+        // Update ecom user's account verified
+        if ($res->user->email_verified_at != null) {
+            User::where('email', $request->input('email'))->update([
+                'email_verified_at' => $res->user->email_verified_at
+            ]);
         }
     }
 

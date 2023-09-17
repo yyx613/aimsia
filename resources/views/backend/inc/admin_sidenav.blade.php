@@ -90,19 +90,19 @@
                             @endcan
                             @if(get_setting('vendor_system_activation') == 1)
                                 @can('show_seller_products')
-                                    <li class="aiz-side-nav-item">
+                                    <!-- <li class="aiz-side-nav-item">
                                         <a href="{{route('products.seller')}}" class="aiz-side-nav-link {{ areActiveRoutes(['products.seller', 'products.seller.edit']) }}">
                                             <span class="aiz-side-nav-text">{{ translate('Seller Products') }}</span>
                                         </a>
-                                    </li>
+                                    </li> -->
                                 @endcan
                             @endif
                             @can('show_digital_products')
-                                <li class="aiz-side-nav-item">
+                                <!-- <li class="aiz-side-nav-item">
                                     <a href="{{route('digitalproducts.index')}}" class="aiz-side-nav-link {{ areActiveRoutes(['digitalproducts.index', 'digitalproducts.create', 'digitalproducts.edit']) }}">
                                         <span class="aiz-side-nav-text">{{ translate('Digital Products') }}</span>
                                     </a>
-                                </li>
+                                </li> -->
                             @endcan
                             @can('product_bulk_import')
                                 <li class="aiz-side-nav-item">
@@ -283,11 +283,11 @@
                             @endcan
 
                             @can('view_seller_orders')
-                                <li class="aiz-side-nav-item">
+                                <!-- <li class="aiz-side-nav-item">
                                     <a href="{{ route('seller_orders.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_orders.index', 'seller_orders.show'])}}">
                                         <span class="aiz-side-nav-text">{{translate('Seller Orders')}}</span>
                                     </a>
-                                </li>
+                                </li> -->
                             @endcan
                             
                             @can('view_pickup_point_orders')
@@ -445,7 +445,7 @@
 
                 <!-- Sellers -->
                 @canany(['view_all_seller','seller_payment_history','view_seller_payout_requests','seller_commission_configuration','view_all_seller_packages','seller_verification_form_configuration'])
-                    <li class="aiz-side-nav-item">
+                    <!-- <li class="aiz-side-nav-item">
                         <a href="#" class="aiz-side-nav-link">
                             <i class="las la-user aiz-side-nav-icon"></i>
                             <span class="aiz-side-nav-text">{{ translate('Sellers') }}</span>
@@ -504,7 +504,7 @@
                                 </li>
                             @endcan
                         </ul>
-                    </li>
+                    </li> -->
                 @endcanany
 
                 {{-- Uploads Files --}}
@@ -532,11 +532,11 @@
                                 </li>
                             @endcan
                             @can('seller_products_sale_report')
-                                <li class="aiz-side-nav-item">
+                                <!-- <li class="aiz-side-nav-item">
                                     <a href="{{ route('seller_sale_report.index') }}" class="aiz-side-nav-link {{ areActiveRoutes(['seller_sale_report.index'])}}">
                                         <span class="aiz-side-nav-text">{{ translate('Seller Products Sale') }}</span>
                                     </a>
-                                </li>
+                                </li> -->
                             @endcan
                             @can('products_stock_report')
                                 <li class="aiz-side-nav-item">

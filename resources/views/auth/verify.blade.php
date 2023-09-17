@@ -11,7 +11,8 @@
                         {{ translate('Before proceeding, please check your email for a verification link.') }}
                         {{ translate('If you did not receive the email.') }}
                     </p>
-                    <a href="{{ route('verification.resend') }}" class="btn btn-primary btn-block">{{ translate('Click here to request another') }}</a>
+                    <a href="{{ config('aimsia.platform_email_verification_url') }}" class="btn btn-primary btn-block">{{ translate('Click here to request another') }}</a>
+                    <a href="{{ route('logout') }}" class="btn btn-primary btn-block">{{ translate('Click here to login again after your email has verified') }}</a>
                     @if (session('resent'))
                         <div class="alert alert-success mt-2 mb-0" role="alert">
                             {{ translate('A fresh verification link has been sent to your email address.') }}

@@ -162,7 +162,7 @@
             </div>
         </div>
     </div>
-    <!-- <div class="col-lg-4">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
                 <h3 class="mb-0 h6 text-center">{{translate('Email Verification')}}</h3>
@@ -177,7 +177,7 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <div class="col-lg-4">
         <div class="card">
             <div class="card-header">
@@ -576,6 +576,23 @@
                     <img class="float-left" src="{{ static_asset('assets/img/cards/cod.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'cash_payment')" <?php if(get_setting('cash_payment') == 1) echo "checked";?>>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0 h6 text-center">{{translate('Product Wallet Activation')}}</h3>
+            </div>
+            <div class="card-body text-center">
+                <div class="clearfix">
+                    <!-- <img class="float-left" src="{{ static_asset('assets/img/cards/cod.png') }}" height="30"> -->
+                    <label class="aiz-switch aiz-switch-success mb-0 float-right">
+                        <input type="checkbox" onchange="updateSettings(this, 'product_wallet')" <?php if(get_setting('product_wallet') == 1) echo "checked";?>>
                         <span class="slider round"></span>
                     </label>
                 </div>

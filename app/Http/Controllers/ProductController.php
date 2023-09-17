@@ -200,11 +200,19 @@ class ProductController extends Controller
         $request->merge(['product_id' => $product->id]);
 
         // Create product through api
+        $discount_type = $request->input('discount_type');
+        $price = $request->input('unit_price');
+        if ($discount_type == 'amount') {
+            $price = $price - $request->input('discount');
+        } else if ($discount_type == 'percent') {
+            $price = $price * ((100 - $request->input('discount')) / 100);
+        }
+
         $form = [
             'platform_id' => config('aimsia.platform_id'),
             'extern_id' => $product->id,
             'name' => $request->input('name') ?? '',
-            'price' => $request->input('unit_price') ?? '',
+            'price' => $price ?? '',
         ];
         $api = new AimsiaApi();
         $res = $api->sendRequest('POST', '/manage/product', $form);
@@ -224,9 +232,9 @@ class ProductController extends Controller
             }
     
             //Flash Deal
-            $this->productFlashDealService->store($request->only([
-                'flash_deal_id', 'flash_discount', 'flash_discount_type'
-            ]), $product);
+            // $this->productFlashDealService->store($request->only([
+            //     'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            // ]), $product);
     
             //Product Stock
             $this->productStockService->store($request->only([
@@ -315,6 +323,39 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
+        // Update product through api
+        $discount_type = $request->input('discount_type'); // Calculate new price
+        $price = $request->input('unit_price');
+        if ($discount_type == 'amount') {
+            $price = $price - $request->input('discount');
+        } else if ($discount_type == 'percent') {
+            $price = $price * ((100 - $request->input('discount')) / 100);
+        }
+        
+        $old_discount_type = $product->discount_type; // Calculate old price
+        $old_price = $product->unit_price;
+        if ($old_discount_type == 'amount') {
+            $old_price = $old_price - $product->discount;
+        } else if ($old_discount_type == 'percent') {
+            $old_price = $old_price * ((100 - $product->discount) / 100);
+        }
+
+        if ($product->name != $request->input('name') || $old_price != $price) {
+            $form = [
+                'platform_id' => config('aimsia.platform_id'),
+                'extern_id' => $product->id,
+                'name' => $request->input('name') ?? '',
+                'price' => $price ?? '',
+            ];
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('POST', '/manage/product', $form);
+    
+            if (isset($res->result) && $res->result == false) {
+                flash(translate('Failed to update product'))->error();
+                return back();
+            }
+        }
+
         //Product
         $product = $this->productService->update($request->except([
             '_token', 'sku', 'choice', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
@@ -331,9 +372,9 @@ class ProductController extends Controller
         ]), $product);
 
         //Flash Deal
-        $this->productFlashDealService->store($request->only([
-            'flash_deal_id', 'flash_discount', 'flash_discount_type'
-        ]), $product);
+        // $this->productFlashDealService->store($request->only([
+        //     'flash_deal_id', 'flash_discount', 'flash_discount_type'
+        // ]), $product);
 
         //VAT & Tax
         if ($request->tax_id) {
@@ -438,12 +479,19 @@ class ProductController extends Controller
         $product_new->save();
         
         // Create product through api
+        $discount_type = $product_new->discount_type;
+        $price = $product_new->unit_price;
+        if ($discount_type == 'amount') {
+            $price = $price - $product_new->discount;
+        } else if ($discount_type == 'percent') {
+            $price = $price * ((100 - $product_new->discount) / 100);
+        }
+
         $form = [
             'platform_id' => config('aimsia.platform_id'),
             'extern_id' => $product_new->id,
-            'name' => $product_new->name?? '',
-            'price' => $product_new->unit_price ?? '',
-            'status' => $product_new->status
+            'name' => $product_new->name ?? '',
+            'price' => $price ?? '',
         ];
         $api = new AimsiaApi();
         $res = $api->sendRequest('POST', '/manage/product', $form);
@@ -487,6 +535,22 @@ class ProductController extends Controller
 
     public function updatePublished(Request $request)
     {
+        // Create product through api
+        if ($request->boolean('status') == true) {
+            $form = [
+                'platform_id' => config('aimsia.platform_id'),
+                'extern_id' => $request->id,
+            ];
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('GET', '/manage/product', $form);
+    
+            $api_published_id = config('aimsia.platform_product_published_id');
+            if ((isset($res->result) && $res->result == false) || (isset($res->product) && $res->product->status != $api_published_id)) {
+                flash(translate('Failed to publish product'))->error();
+                return back();
+            }
+        }
+
         $product = Product::findOrFail($request->id);
         $product->published = $request->status;
 

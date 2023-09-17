@@ -495,7 +495,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Cash On Delivery')}}</h5>
                     </div>
@@ -519,9 +519,9 @@
                             </p>
                         @endif
                     </div>
-                </div>
+                </div> -->
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Featured')}}</h5>
                     </div>
@@ -536,9 +536,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Todays Deal')}}</h5>
                     </div>
@@ -553,9 +553,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Flash Deal')}}</h5>
                     </div>
@@ -591,7 +591,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="card">
                     <div class="card-header">
@@ -612,7 +612,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('VAT & Tax')}}</h5>
                     </div>
@@ -636,7 +636,7 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
+                </div> -->
 
             </div>
             <div class="col-12">
@@ -644,9 +644,9 @@
                     <div class="btn-group mr-2" role="group" aria-label="Third group">
                         <button type="submit" name="button" value="unpublish" class="btn btn-primary action-btn">{{ translate('Save & Unpublish') }}</button>
                     </div>
-                    <div class="btn-group" role="group" aria-label="Second group">
+                    <!-- <div class="btn-group" role="group" aria-label="Second group">
                         <button type="submit" name="button" value="publish" class="btn btn-success action-btn">{{ translate('Save & Publish') }}</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

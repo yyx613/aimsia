@@ -21,7 +21,12 @@
                 </div>
                 <br>
                 @php
-                    $permission_groups =  \App\Models\Permission::all()->groupBy('section');
+                    if(Illuminate\Support\Facades\Auth::user()->user_type == 'admin'){
+                        $permission_groups =  \App\Models\Permission::all()->groupBy('section');
+                    }
+                    else{
+                        $permission_groups =  \App\Models\Permission::all()->where('updated_at','<>',NULL)->groupBy('section');
+                    }
                     $addons = array("offline_payment", "club_point", "pos_system", "paytm", "seller_subscription", "otp_system", "refund_request", "affiliate_system", "african_pg", "delivery_boy", "auction", "wholesale");
                 @endphp
                 @foreach ($permission_groups as $key => $permission_group)

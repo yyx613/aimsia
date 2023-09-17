@@ -57,7 +57,7 @@
             <div class="col-md-2 ml-auto">
                 <select class="form-control form-control-sm aiz-selectpicker mb-2 mb-md-0" id="user_id" name="user_id" onchange="sort_products()">
                     <option value="">{{ translate('All Sellers') }}</option>
-                        @foreach (App\Models\User::where('user_type', '=', 'admin')->orWhere('user_type', '=', 'seller')->get() as $key => $seller)
+                        @foreach (App\Models\User::where('user_type', '=', 'admin')->get() as $key => $seller)
                             <option value="{{ $seller->id }}" @if ($seller->id == $seller_id) selected @endif>{{ $seller->name }}</option>
                         @endforeach
                 </select>
@@ -105,12 +105,12 @@
                         @endif
                         <th data-breakpoints="sm">{{translate('Info')}}</th>
                         <th data-breakpoints="md">{{translate('Total Stock')}}</th>
-                        <th data-breakpoints="lg">{{translate('Todays Deal')}}</th>
+                        <!-- <th data-breakpoints="lg">{{translate('Todays Deal')}}</th> -->
                         <th data-breakpoints="lg">{{translate('Published')}}</th>
                         @if(get_setting('product_approve_by_admin') == 1 && $type == 'Seller')
-                            <th data-breakpoints="lg">{{translate('Approved')}}</th>
+                            <!-- <th data-breakpoints="lg">{{translate('Approved')}}</th> -->
                         @endif
-                        <th data-breakpoints="lg">{{translate('Featured')}}</th>
+                        <!-- <th data-breakpoints="lg">{{translate('Featured')}}</th> -->
                         <th data-breakpoints="sm" class="text-right">{{translate('Options')}}</th>
                     </tr>
                 </thead>
@@ -166,12 +166,12 @@
                                 <span class="badge badge-inline badge-danger">Low</span>
                             @endif
                         </td>
-                        <td>
+                        <!-- <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input onchange="update_todays_deal(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->todays_deal == 1) echo "checked"; ?> >
                                 <span class="slider round"></span>
                             </label>
-                        </td>
+                        </td> -->
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->published == 1) echo "checked"; ?> >
@@ -186,12 +186,12 @@
                                 </label>
                             </td>
                         @endif
-                        <td>
+                        <!-- <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
                                 <input onchange="update_featured(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->featured == 1) echo "checked"; ?> >
                                 <span class="slider round"></span>
                             </label>
-                        </td>
+                        </td> -->
                         <td class="text-right">
                             <a class="btn btn-soft-success btn-icon btn-circle btn-sm"  href="{{ route('product', $product->slug) }}" target="_blank" title="{{ translate('View') }}">
                                 <i class="las la-eye"></i>

@@ -559,7 +559,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Cash On Delivery')}}</h5>
                     </div>
@@ -587,8 +587,8 @@
                             </p>
                         @endif
                     </div>
-                </div>
-                <div class="card">
+                </div> -->
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Featured')}}</h5>
                     </div>
@@ -607,9 +607,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Todays Deal')}}</h5>
                     </div>
@@ -628,9 +628,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('Flash Deal')}}</h5>
                     </div>
@@ -670,7 +670,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="card">
                     <div class="card-header">
@@ -691,7 +691,7 @@
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- <div class="card">
                     <div class="card-header">
                         <h5 class="mb-0 h6">{{translate('VAT & Tax')}}</h5>
                     </div>
@@ -730,7 +730,7 @@
                         </div>
                         @endforeach
                     </div>
-                </div>
+                </div> -->
 
             </div>
             <div class="col-12">

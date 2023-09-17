@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\AimsiaApi;
 use App\Utility\PayfastUtility;
 use Illuminate\Http\Request;
 use App\Models\Category;
@@ -44,7 +45,20 @@ class CheckoutController extends Controller
         // Minumum order amount check end
         
         if ($request->payment_option != null) {
-            (new OrderController)->store($request);
+            $res = (new OrderController)->store($request);
+            
+            if ($res != null) {
+                if ($res->getCode() == 1) {
+                    flash(translate($res->getMessage()))->warning();
+                    return redirect()->route('home');
+                } else if ($res->getCode() == 2) {
+                    flash(translate($res->getMessage()))->warning();
+                    return redirect()->route('cart')->send();
+                } else if ($res->getCode() == 3) {
+                    flash(translate($res->getMessage()))->error();
+                    return redirect()->route('home');
+                }
+            }
 
             $request->session()->put('payment_type', 'cart_payment');
             
@@ -188,7 +202,19 @@ class CheckoutController extends Controller
             }
             $total = $subtotal + $tax + $shipping;
 
-            return view('frontend.payment_select', compact('carts', 'shipping_info', 'total'));
+            // Get user product wallet through api
+            $product_wallet = 0;
+            $form = [
+                'email' => auth()->user()->email
+            ];
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('GET', '/manage/productwallet', $form);
+
+            if (isset($res->result) && $res->result == true) {
+                $product_wallet = $res->product_wallet;
+            }
+
+            return view('frontend.payment_select', compact('carts', 'shipping_info', 'total', 'product_wallet'));
 
         } else {
             flash(translate('Your Cart was empty'))->warning();
