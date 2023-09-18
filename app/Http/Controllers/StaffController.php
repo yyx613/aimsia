@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\AimsiaApi;
 use Illuminate\Http\Request;
 use App\Models\Staff;
 use App\Models\Role;
 use App\Models\User;
 use Hash;
+use Illuminate\Validation\ValidationException;
+use Log;
 
 class StaffController extends Controller
 {
@@ -49,6 +52,17 @@ class StaffController extends Controller
     public function store(Request $request)
     {
         if(User::where('email', $request->email)->first() == null){
+            // Register user through api
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('POST', '/signup', $request->all());
+
+            if (isset($res->result) && $res->result == false) {
+                if (gettype($res->message) == 'string') {
+                    flash(translate($res->message))->error();
+                    return back();
+                }
+                throw ValidationException::withMessages((array)$res->message);
+            }
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;

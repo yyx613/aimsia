@@ -258,13 +258,21 @@ class LoginController extends Controller
             ];
             $created_user = (new RegisterController)->create($data);
             // Add user role & permission
-            if(User::where('user_type', 'staff')->count() <= 1) {
+            if($user_type == 'staff' && User::where('user_type', 'staff')->count() <= 1) {
                 DB::table('model_has_roles')->insert([
                     'role_id' => 3,
                     'model_type' => 'App\Models\User',
                     'model_id' => $created_user->id,
                 ]);
             }
+            if($user_type == 'admin') {
+                DB::table('model_has_roles')->insert([
+                    'role_id' => 1,
+                    'model_type' => 'App\Models\User',
+                    'model_id' => $created_user->id,
+                ]);
+            }
+
         }
         // Update ecom user's account verified
         if ($res->user->email_verified_at != null) {

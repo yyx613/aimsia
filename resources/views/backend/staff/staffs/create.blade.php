@@ -15,27 +15,54 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="name">{{translate('Name')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control" required>
+                            <input type="text" placeholder="{{translate('Name')}}" id="name" name="name" class="form-control {{ $errors->has('name') ? ' is-invalid' : '' }}" required>
+                            @if ($errors->has('name'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="email">{{translate('Email')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Email')}}" id="email" name="email" class="form-control" required>
+                            <input type="text" placeholder="{{translate('Email')}}" id="email" name="email" class="form-control {{ $errors->has('email') ? ' is-invalid' : '' }}" required>
+                            @if ($errors->has('email'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="mobile">{{translate('Phone')}}</label>
                         <div class="col-sm-9">
-                            <input type="text" placeholder="{{translate('Phone')}}" id="mobile" name="mobile" class="form-control" required>
+                            <input type="text" placeholder="{{translate('Phone')}}" id="mobile" name="mobile" class="form-control {{ $errors->has('mobile') ? ' is-invalid' : '' }}" required>
+                            @if ($errors->has('mobile'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('mobile') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="password">{{translate('Password')}}</label>
                         <div class="col-sm-9">
-                            <input type="password" placeholder="{{translate('Password')}}" id="password" name="password" class="form-control" required>
+                            <input type="password" placeholder="{{translate('Password')}}" id="password" name="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" required>
+                            @if ($errors->has('password'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('password') }}</strong>
+                                </span>
+                            @endif
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-from-label" for="password">{{translate('Confirm Password')}}</label>
+                        <div class="col-sm-9">
+                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required placeholder="{{ translate('Confrim Password') }}">
+                        </div>
+                    </div>
+
                     <div class="form-group row">
                         <label class="col-sm-3 col-from-label" for="name">{{translate('Role')}}</label>
                         <div class="col-sm-9">
