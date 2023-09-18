@@ -243,11 +243,18 @@ class LoginController extends Controller
 
         // Create user in ecom if not exists
         if (!User::where('email', $res->user->email)->exists()) {
-            $data = [
+            $user_type = 'customer';
+            if ($res->user->type == 1) {
+                $user_type = 'staff';
+            }
+            if ($res->user->email == 'administrator@app.com') {
+                $user_type = 'admin';
+            }
+             $data = [
                 'name' => $res->user->name,
                 'email' => $res->user->email,
                 'password' => $request->input('password'),
-                'user_type' => $res->user->type == 1 ? 'staff' : 'customer'
+                'user_type' => $user_type
             ];
             $created_user = (new RegisterController)->create($data);
             // Add user role & permission
