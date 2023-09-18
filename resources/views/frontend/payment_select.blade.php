@@ -83,7 +83,7 @@
                                                 <input value="product_wallet" class="online_payment" type="radio"
                                                     name="payment_option" checked>
                                                 <span class="d-block aiz-megabox-elem rounded-0 p-3">
-                                                    <img src="{{ static_asset('assets/img/cards/paypal.png') }}"
+                                                    <img src="{{ static_asset('assets/img/cards/product_wallet.png') }}"
                                                         class="img-fit mb-2">
                                                     <span class="d-block text-center">
                                                         <span
