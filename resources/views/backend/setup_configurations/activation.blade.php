@@ -590,7 +590,7 @@
             </div>
             <div class="card-body text-center">
                 <div class="clearfix">
-                    <!-- <img class="float-left" src="{{ static_asset('assets/img/cards/cod.png') }}" height="30"> -->
+                    <img class="float-left" src="{{ static_asset('assets/img/cards/product_wallet.png') }}" height="30">
                     <label class="aiz-switch aiz-switch-success mb-0 float-right">
                         <input type="checkbox" onchange="updateSettings(this, 'product_wallet')" <?php if(get_setting('product_wallet') == 1) echo "checked";?>>
                         <span class="slider round"></span>
