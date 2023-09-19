@@ -260,9 +260,13 @@ class LoginController extends Controller
             // Add user role & permission
             if($user_type == 'staff' && User::where('user_type', 'staff')->count() <= 1) {
                 DB::table('model_has_roles')->insert([
-                    'role_id' => 3,
+                    'role_id' => 4,
                     'model_type' => 'App\Models\User',
                     'model_id' => $created_user->id,
+                ]);
+                DB::table('staff')->insert([
+                    'user_id' => $created_user->id,
+                    'role_id' => 4,
                 ]);
             }
             if($user_type == 'admin') {

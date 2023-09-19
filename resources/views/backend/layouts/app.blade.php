@@ -15,7 +15,8 @@
 
 	<!-- Favicon -->
 	<link rel="icon" href="{{ uploaded_asset(get_setting('site_icon')) }}">
-	<title>{{ get_setting('website_name').' | '.get_setting('site_motto') }}</title>
+	<!-- <title>{{ get_setting('website_name').' | '.get_setting('site_motto') }}</title> -->
+	<title>{{ get_setting('website_name') }}</title>
 
 	<!-- google font -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">

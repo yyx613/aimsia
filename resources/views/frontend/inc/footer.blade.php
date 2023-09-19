@@ -234,11 +234,11 @@
                                 {{ translate('My Wishlist') }}
                             </a>
                         </li>
-                        <li class="mb-2">
+                        <!-- <li class="mb-2">
                             <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('orders.track') }}">
                                 {{ translate('Track Order') }}
                             </a>
-                        </li>
+                        </li> -->
                         @if (addon_is_activated('affiliate_system'))
                             <li class="mb-2">
                                 <a class="fs-13 text-soft-light animate-underline-white" href="{{ route('affiliate.apply') }}">
