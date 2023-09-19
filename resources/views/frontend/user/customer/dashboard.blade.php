@@ -163,6 +163,17 @@
                     </div>
                 </div>
 
+                <!-- Product Wallet -->
+                <div class="d-flex align-items-center py-4">
+                    <div style="height: 48px; width: 48px;">
+                        <img src="{{ static_asset('assets/img/cards/product_wallet.png') }}" alt="" style="height: 100%; width: 100%; object-fit:contain;">
+                    </div>
+                    <div class="ml-3 d-flex flex-column justify-content-between">
+                        <span class="fs-20 fw-700 mb-1">{{ $product_wallet }}</span>
+                        <span class="fs-14 fw-400 text-secondary">{{ translate('Product Wallet') }}</span>
+                    </div>
+                </div>
+
             </div>
         </div>
 

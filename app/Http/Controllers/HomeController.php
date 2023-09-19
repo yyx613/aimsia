@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\AimsiaApi;
 use Auth;
 use Hash;
 use Mail;
@@ -136,10 +137,24 @@ class HomeController extends Controller
      */
     public function dashboard()
     {
+        // Get user product wallet through api
+        $product_wallet = 0;
+        $form = [
+            'email' => auth()->user()->email
+        ];
+        $api = new AimsiaApi();
+        $res = $api->sendRequest('GET', '/manage/productwallet', $form);
+
+        if (isset($res->result) && $res->result == true) {
+            $product_wallet = $res->product_wallet;
+        }
+
         if (Auth::user()->user_type == 'seller') {
             return redirect()->route('seller.dashboard');
         } elseif (Auth::user()->user_type == 'customer') {
-            return view('frontend.user.customer.dashboard');
+            return view('frontend.user.customer.dashboard', [
+                'product_wallet' => $product_wallet
+            ]);
         } elseif (Auth::user()->user_type == 'delivery_boy') {
             return view('delivery_boys.dashboard');
         } else {
