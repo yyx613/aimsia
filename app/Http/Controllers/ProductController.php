@@ -475,6 +475,7 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         $product_new = $product->replicate();
+        $product_new->published = 0;
         $product_new->slug = $product_new->slug . '-' . Str::random(5);
         $product_new->save();
         
