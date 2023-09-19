@@ -174,7 +174,7 @@
                         </td> -->
                         <td>
                             <label class="aiz-switch aiz-switch-success mb-0">
-                                <input onchange="update_published(this)" value="{{ $product->id }}" type="checkbox" <?php if ($product->published == 1) echo "checked"; ?> >
+                                <input onchange="update_published(this)" data-id="{{ $product->id }}" class="publish-btns" value="{{ $product->id }}" type="checkbox" <?php if ($product->published == 1) echo "checked"; ?> >
                                 <span class="slider round"></span>
                             </label>
                         </td>
@@ -275,6 +275,7 @@
         }
 
         function update_published(el){
+            var id = $(el).data('id')
             if(el.checked){
                 var status = 1;
             }
@@ -286,7 +287,8 @@
                     AIZ.plugins.notify('success', '{{ translate('Published products updated successfully') }}');
                 }
                 else{
-                    AIZ.plugins.notify('danger', '{{ translate('Something went wrong') }}');
+                    $(`.publish-btns[data-id="${id}"]`)[0].checked = !$(`.publish-btns[data-id="${id}"]`)[0].checked; 
+                    AIZ.plugins.notify('danger', '{{ translate('Product had not configured yet in system.') }}');
                 }
             });
         }

@@ -298,7 +298,7 @@ class OrderController extends Controller
                 $form = [
                     'email' => auth()->user()->email,
                     'payment' => $combined_order->grand_total,
-                    'remark' => $combined_order->id,
+                    'remark' => $order->code,
                 ];
                 $api = new AimsiaApi();
                 $res = $api->sendRequest('POST', '/manage/productwallet', $form);

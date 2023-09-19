@@ -143,7 +143,7 @@
                 </div>
 
                 <!-- Order summary -->
-                <div class="d-flex align-items-center py-4">
+                <div class="d-flex align-items-center py-4 border-bottom">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
                         <g id="Group_25000" data-name="Group 25000" transform="translate(-1367 -576)">
                         <path id="Path_32315" data-name="Path 32315" d="M24,0A24,24,0,1,1,0,24,24,24,0,0,1,24,0Z" transform="translate(1367 576)" fill="#85b567"/>

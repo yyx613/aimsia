@@ -404,7 +404,7 @@
         <div class="container h-100">
             <div class="d-flex h-100">
                 <!-- Categoty Menu Button -->
-                <div class="d-none d-xl-block all-category has-transition bg-black-10" id="category-menu-bar">
+                <!-- <div class="d-none d-xl-block all-category has-transition bg-black-10" id="category-menu-bar">
                     <div class="px-3 h-100" style="padding-top: 12px;padding-bottom: 12px; width:270px; cursor: pointer;">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
@@ -416,7 +416,7 @@
                             <i class="las la-angle-down text-white has-transition" id="category-menu-bar-icon" style="font-size: 1.2rem !important"></i>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- Header Menus -->
                 <div class="ml-xl-4 w-100 overflow-hidden">
                     <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
