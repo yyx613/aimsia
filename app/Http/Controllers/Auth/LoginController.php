@@ -258,15 +258,15 @@ class LoginController extends Controller
             ];
             $created_user = (new RegisterController)->create($data);
             // Add user role & permission
-            if($user_type == 'staff' && User::where('user_type', 'staff')->count() <= 1) {
+            if ($user_type == 'staff') {
                 DB::table('model_has_roles')->insert([
-                    'role_id' => 4,
+                    'role_id' => 5,
                     'model_type' => 'App\Models\User',
                     'model_id' => $created_user->id,
                 ]);
                 DB::table('staff')->insert([
                     'user_id' => $created_user->id,
-                    'role_id' => 4,
+                    'role_id' => 5,
                 ]);
             }
             if($user_type == 'admin') {
