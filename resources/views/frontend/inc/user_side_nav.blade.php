@@ -130,7 +130,7 @@
                 </li>
 
                 <!-- Compare -->
-                <li class="aiz-side-nav-item">
+                <!-- <li class="aiz-side-nav-item">
                     <a href="{{ route('compare') }}" class="aiz-side-nav-link {{ areActiveRoutes(['compare']) }}">
                         <svg id="Group_22071" data-name="Group 22071" xmlns="http://www.w3.org/2000/svg" width="14.6" height="16" viewBox="0 0 14.6 16">
                             <g id="LWPOLYLINE" transform="translate(0.158)">
@@ -142,10 +142,10 @@
                         </svg>
                         <span class="aiz-side-nav-text ml-3">{{ translate('Compare') }}</span>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Followed Sellers -->
-                <li class="aiz-side-nav-item">
+                <!-- <li class="aiz-side-nav-item">
                     <a href="{{ route('followed_seller') }}" class="aiz-side-nav-link {{ areActiveRoutes(['followed_seller']) }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                             <g id="Group_8114" data-name="Group 8114" transform="translate(-1501.679 -486)">
@@ -154,7 +154,7 @@
                         </svg>
                         <span class="aiz-side-nav-text ml-3">{{ translate('Followed Sellers') }}</span>
                     </a>
-                </li>
+                </li> -->
 
                 <!-- Classified Products -->
                 @if (get_setting('classified_product') == 1)
@@ -224,7 +224,7 @@
                             ->where('sender_viewed', 0)
                             ->get();
                     @endphp
-                    <li class="aiz-side-nav-item">
+                    <!-- <li class="aiz-side-nav-item">
                         <a href="{{ route('conversations.index') }}"
                             class="aiz-side-nav-link {{ areActiveRoutes(['conversations.index', 'conversations.show']) }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
@@ -240,7 +240,7 @@
                                 <span class="badge badge-success">({{ count($conversation) }})</span>
                             @endif
                         </a>
-                    </li>
+                    </li> -->
                 @endif
 
                 <!-- My Wallet -->
@@ -358,7 +358,7 @@
                 </li>
 
                 <!-- Delete My Account -->
-                <li class="aiz-side-nav-item">
+                <!-- <li class="aiz-side-nav-item">
                     <a href="javascript:void(0)" onclick="account_delete_confirm_modal('{{ route('account_delete') }}')" class="aiz-side-nav-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
                             <g id="Group_25000" data-name="Group 25000" transform="translate(-240.535 -537)">
@@ -368,7 +368,7 @@
                         </svg>
                         <span class="aiz-side-nav-text ml-3">{{ translate('Delete My Account') }}</span>
                     </a>
-                </li>
+                </li> -->
 
             </ul>
         

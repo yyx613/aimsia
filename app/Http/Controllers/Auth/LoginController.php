@@ -228,11 +228,15 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'email'    => 'required|string|email',
+            'email'    => 'required_without:phone',
+            'phone'    => 'required_without:email',
             'password' => 'required|string',
         ]);
 
         // Login user through api
+        if ($request->email == null && $request->phone != null) {
+            $request->merge(['email' => '0'.$request->phone]);
+        }
         $api = new AimsiaApi();
         $res = $api->sendRequest('POST', '/login', $request->all());
 
@@ -279,6 +283,8 @@ class LoginController extends Controller
 
         }
         // Update ecom user's account verified
+        $request->merge(['email' => $res->user->email, 'phone' => null]); // Change back email in request to actual email from api
+        
         if ($res->user->email_verified_at != null) {
             User::where('email', $request->input('email'))->update([
                 'email_verified_at' => $res->user->email_verified_at

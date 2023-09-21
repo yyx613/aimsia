@@ -22,7 +22,7 @@
                                                 @csrf
                                                 
                                                 <!-- Email or Phone -->
-                                                @if (addon_is_activated('otp_system') && env("DEMO_MODE") != "On")
+                                                @if (true)
                                                     <div class="form-group phone-form-group mb-1">
                                                         <label for="phone" class="fs-12 fw-700 text-soft-dark">{{  translate('Phone') }}</label>
                                                         <input type="tel" id="phone-code" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }} rounded-0" value="{{ old('phone') }}" placeholder="" name="phone" autocomplete="off">
