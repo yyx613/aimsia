@@ -156,8 +156,8 @@ class RegisterController extends Controller
             throw ValidationException::withMessages((array)$res->message);
         }
         // Login to add session on panel
-        $api = new AimsiaApi();
-        $res = $api->sendSSORequest('POST', '/login', $request->all());
+        // $api = new AimsiaApi();
+        // $res = $api->sendSSORequest('POST', '/login', $request->all());
 
         $user = $this->create($request->all());
 
