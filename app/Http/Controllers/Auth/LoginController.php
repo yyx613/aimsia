@@ -238,7 +238,7 @@ class LoginController extends Controller
             $request->merge(['email' => '0'.$request->phone]);
         }
         $api = new AimsiaApi();
-        $res = $api->sendRequest('POST', '/login', $request->all());
+        $res = $api->sendSSORequest('POST', '/login', $request->all());
 
         if (isset($res->result) && $res->result == false && !isset($res->user)) {
             flash(translate($res->message))->error();
@@ -362,6 +362,14 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
+        $api = new AimsiaApi();
+        $res = $api->sendSSORequest('GET', '/logout', []);
+
+        if (isset($res->result) && $res->result == false) {
+            flash(translate('Something went wrong'))->error();
+            return back();
+        }
+
         if (auth()->user() != null && (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')) {
             $redirect_route = 'user.login';
         } else {
@@ -375,7 +383,7 @@ class LoginController extends Controller
 
         $this->guard()->logout();
 
-        $request->session()->invalidate();
+        session()->invalidate();
 
         return $this->loggedOut($request) ?: redirect()->route($redirect_route);
     }

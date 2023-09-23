@@ -57,6 +57,39 @@ class AimsiaApi {
         return json_decode($res_content);
     }
 
+    public function sendSSORequest($method, $endpoint, $form):object {
+        // Send request
+        $client = new Client();
+        $api_url = config('aimsia.api_url') . '/sso' . $endpoint;
+        
+       try {
+            if ($method == 'POST') {
+                $res = $client->request($method, $api_url, [
+                    'form_params' => $form
+                ]);
+            } else {
+                $res = $client->request($method, $api_url, [
+                    'query' => $form
+                ]);
+            }
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            $res = $e->getResponse();
+        } catch (\GuzzleHttp\Exception\ServerException $e) {
+            $res = $e->getResponse();
+        }
+        $res_content = $res->getBody()->getContents();
+        DB::table('aimsia_api')->insert([
+            'method' => $method,
+            'url' => $api_url,
+            'request' => json_encode($form),
+            'response' => $res_content,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+        
+        return json_decode($res_content);
+    }
+
     private function generateAccessToken(): ?string {
         try {
             $body = [

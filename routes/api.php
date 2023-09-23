@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V2;
 
 use Illuminate\Support\Facades\Route;
 
+Route::post('/sso/logout', 'App\Http\Controllers\Api\V2\SSOController@logout');
+
 Route::group(['prefix' => 'v2/auth', 'middleware' => ['app_language']], function () {
     Route::post('login', 'App\Http\Controllers\Api\V2\AuthController@login');
     Route::post('signup', 'App\Http\Controllers\Api\V2\AuthController@signup');
