@@ -550,6 +550,6 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout', 'account_deletion', 'loginSSOCallback', 'logoutSSOCallback']);
+        $this->middleware('guest')->except(['logout', 'account_deletion', 'loginSSOCallback', 'logoutSSOCallback', 'loginSSO', 'logoutSSO']);
     }
 }
