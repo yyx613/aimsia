@@ -39,8 +39,9 @@ class StaffController extends Controller
      */
     public function create()
     {
-        $roles = Role::where('id','!=',1)->orderBy('id', 'desc')->get();
-        return view('backend.staff.staffs.create', compact('roles'));
+        abort(404);
+        // $roles = Role::where('id','!=',1)->orderBy('id', 'desc')->get();
+        // return view('backend.staff.staffs.create', compact('roles'));
     }
 
     /**
@@ -120,12 +121,12 @@ class StaffController extends Controller
     {
         $staff = Staff::findOrFail($id);
         $user = $staff->user;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->phone = $request->mobile;
-        if(strlen($request->password) > 0){
-            $user->password = Hash::make($request->password);
-        }
+        // $user->name = $request->name;
+        // $user->email = $request->email;
+        // $user->phone = $request->mobile;
+        // if(strlen($request->password) > 0){
+        //     $user->password = Hash::make($request->password);
+        // }
         if($user->save()){
             $staff->role_id = $request->role_id;
             if($staff->save()){

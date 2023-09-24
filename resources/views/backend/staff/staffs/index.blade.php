@@ -8,11 +8,11 @@
 			<h1 class="h3">{{translate('All Staffs')}}</h1>
 		</div>
         @can('add_staff')
-            <div class="col-md-6 text-md-right">
+            <!-- <div class="col-md-6 text-md-right">
                 <a href="{{ route('staffs.create') }}" class="btn btn-circle btn-info">
                     <span>{{translate('Add New Staffs')}}</span>
                 </a>
-            </div>
+            </div> -->
         @endcan
 	</div>
 </div>
