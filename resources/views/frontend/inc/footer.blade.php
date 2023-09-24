@@ -13,7 +13,7 @@
         </div>
         <div class="row">
             <!-- about & subscription -->
-            <div class="col-xl-6 col-lg-7">
+            <!-- <div class="col-xl-6 col-lg-7">
                 <div class="mb-4 text-secondary text-justify">
                     {!! get_setting('about_us_description',null,App::getLocale()) !!}
                 </div>
@@ -31,7 +31,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> -->
             
             <div class="col d-none d-lg-block"></div>
 
