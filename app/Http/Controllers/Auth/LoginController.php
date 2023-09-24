@@ -19,8 +19,10 @@ use Illuminate\Support\Str;
 use GuzzleHttp\Client;
 use Auth;
 use DB;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 use Log;
+use Redirect;
 use Storage;
 
 class LoginController extends Controller
@@ -239,6 +241,7 @@ class LoginController extends Controller
         }
         $api = new AimsiaApi();
         $res = $api->sendRequest('POST', '/login', $request->all());
+        session(['sso_auth' => $request->all()]);
 
         if (isset($res->result) && $res->result == false && !isset($res->user)) {
             flash(translate($res->message))->error();
@@ -313,6 +316,90 @@ class LoginController extends Controller
      */
     public function authenticated()
     {
+        $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode(session('sso_auth')['email']).'/'.base64_encode(session('sso_auth')['password']).'/'.base64_encode(config('app.url').'/sso/login/callback');
+        Log::info($url);
+        return Redirect::away($url);
+    }
+
+    public function loginSSO($email, $password) {
+        try {
+            $email = base64_decode($email);
+            $password = base64_decode($password);
+            Log::info('loginSSO');
+            Log::info($email);
+            Log::info($password);
+            $form = [
+                'email' => $email,
+                'password' => $password
+            ];
+            // Login user through api
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('POST', '/login', $form);
+    
+            if (isset($res->result) && $res->result == false && !isset($res->user)) {
+                throw new \Exception($res->message, 1);
+            }
+
+            // Create user in ecom if not exists
+            if (!User::where('email', $res->user->email)->exists()) {
+                $user_type = 'customer';
+                if ($res->user->type == 1) {
+                    $user_type = 'staff';
+                }
+                if ($res->user->email == 'administrator@app.com') {
+                    $user_type = 'admin';
+                }
+                 $data = [
+                    'name' => $res->user->name,
+                    'email' => $res->user->email,
+                    'password' => $password,
+                    'user_type' => $user_type
+                ];
+                $created_user = (new RegisterController)->create($data);
+                // Add user role & permission
+                if ($user_type == 'staff') {
+                    DB::table('model_has_roles')->insert([
+                        'role_id' => 5,
+                        'model_type' => 'App\Models\User',
+                        'model_id' => $created_user->id,
+                    ]);
+                    DB::table('staff')->insert([
+                        'user_id' => $created_user->id,
+                        'role_id' => 5,
+                    ]);
+                }
+                if($user_type == 'admin') {
+                    DB::table('model_has_roles')->insert([
+                        'role_id' => 1,
+                        'model_type' => 'App\Models\User',
+                        'model_id' => $created_user->id,
+                    ]);
+                }
+    
+            }
+            // Update ecom user's account verified
+            if ($res->user->email_verified_at != null) {
+                User::where('email', $email)->update([
+                    'email_verified_at' => $res->user->email_verified_at
+                ]);
+            }
+
+            $user = User::where('email', $res->user->email)->first();
+            Auth::loginUsingId($user);
+
+            return Response::json([
+                'result' => true,
+                'message' => 'login successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return Response::json([
+                'result' => false,
+                'message' => $th->getMessage()
+            ], 400);
+        }
+    }
+
+    public function loginSSOCallback() {
         if (session('temp_user_id') != null) {
             Cart::where('temp_user_id', session('temp_user_id'))
                 ->update(
@@ -360,16 +447,37 @@ class LoginController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function logout(Request $request)
+    public function logout()
     {
-        // $api = new AimsiaApi();
-        // $res = $api->sendSSORequest('GET', '/logout', []);
+        $url = config('aimsia.api_url') . '/sso/multilogout/' . base64_encode(config('app.url').'/sso/logout/callback');
+        return Redirect::away($url);
+    }
 
-        // if (isset($res->result) && $res->result == false) {
-        //     flash(translate('Something went wrong'))->error();
-        //     return back();
-        // }
+    public function logoutSSO() {
+        try {
+            Log::info('logoutSSO');
+            //User's Cart Delete
+            if (auth()->user()) {
+                Cart::where('user_id', auth()->user()->id)->delete();
+            }
 
+            $this->guard()->logout();
+
+            session()->invalidate();
+
+            return Response::json([
+                'result' => true,
+                'message' => 'logout successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return Response::json([
+                'result' => false,
+                'message' => $th->getMessage()
+            ], 400);
+        }
+    }
+
+    public function logoutSSOCallback(Request $request) {
         if (auth()->user() != null && (auth()->user()->user_type == 'admin' || auth()->user()->user_type == 'staff')) {
             $redirect_route = 'user.login';
         } else {
@@ -442,6 +550,6 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout', 'account_deletion']);
+        $this->middleware('guest')->except(['logout', 'account_deletion', 'loginSSOCallback', 'logoutSSOCallback']);
     }
 }

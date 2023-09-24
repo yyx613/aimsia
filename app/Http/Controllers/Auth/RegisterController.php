@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Http\Controllers\OTPVerificationController;
 use App\Notifications\EmailVerificationNotification;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Log;
 
@@ -56,7 +57,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except(['registerSSOCallback']);
     }
 
     /**
@@ -155,13 +156,18 @@ class RegisterController extends Controller
             }
             throw ValidationException::withMessages((array)$res->message);
         }
-        // Login to add session on panel
-        // $api = new AimsiaApi();
-        // $res = $api->sendSSORequest('POST', '/login', $request->all());
 
         $user = $this->create($request->all());
 
         $this->guard()->login($user);
+
+        $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode($request->email).'/'.base64_encode($request->password).'/'.base64_encode(config('app.url').'/sso/register/callback');
+        return Redirect::away($url);
+    }
+
+    public function registerSSOCallback(Request $request) {
+        $user = auth()->user();
+        Log::info('registerSSOCallback');
 
         if($user->email != null){
             if(BusinessSetting::where('type', 'email_verification')->first()->value != 1){

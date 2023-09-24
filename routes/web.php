@@ -19,6 +19,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AizUploadController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\SubscriberController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\FollowSellerController;
@@ -58,6 +59,12 @@ use App\Http\Controllers\Payment\AuthorizenetController;
   | contains the "web" middleware group. Now create something great!
   |
  */
+
+Route::get('/sso/login/{email}/{password}', [LoginController::class, 'loginSSO']);
+Route::get('/sso/logout', [LoginController::class, 'logoutSSO']);
+Route::get('/sso/login/callback', [LoginController::class, 'loginSSOCallback']);
+Route::get('/sso/logout/callback', [LoginController::class, 'logoutSSOCallback']);
+Route::get('/sso/register/callback', [RegisterController::class, 'registerSSOCallback']);
 
 Route::controller(DemoController::class)->group(function () {
     Route::get('/demo/cron_1', 'cron_1');

@@ -21,7 +21,8 @@ class SSOMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        // if (auth()->user() == null) {
+        // dd(auth()->user(), session()->all());
+        if (auth()->user() == null) {
         //     $api = new AimsiaApi();
         //     $res = $api->sendSSORequest('GET', '/auth', []);
         //     if (isset($res->result) && $res->result == true && isset($res->user)) {
@@ -42,7 +43,7 @@ class SSOMiddleware
         //             }
         //         }
         //     }
-        // }
+        }
         return $next($request);
     }
 }
