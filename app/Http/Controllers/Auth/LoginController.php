@@ -317,7 +317,6 @@ class LoginController extends Controller
     public function authenticated()
     {
         $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode(session('sso_auth')['email']).'/'.base64_encode(session('sso_auth')['password']).'/'.base64_encode(config('app.url').'/sso/login/callback');
-        Log::info($url);
         return Redirect::away($url);
     }
 
@@ -325,9 +324,6 @@ class LoginController extends Controller
         try {
             $email = base64_decode($email);
             $password = base64_decode($password);
-            Log::info('loginSSO');
-            Log::info($email);
-            Log::info($password);
             $form = [
                 'email' => $email,
                 'password' => $password
@@ -385,7 +381,7 @@ class LoginController extends Controller
             }
 
             $user = User::where('email', $res->user->email)->first();
-            Auth::loginUsingId($user);
+            Auth::loginUsingId($user->id);
 
             return Response::json([
                 'result' => true,
@@ -455,7 +451,6 @@ class LoginController extends Controller
 
     public function logoutSSO() {
         try {
-            Log::info('logoutSSO');
             //User's Cart Delete
             if (auth()->user()) {
                 Cart::where('user_id', auth()->user()->id)->delete();

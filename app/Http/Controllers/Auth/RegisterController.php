@@ -167,7 +167,6 @@ class RegisterController extends Controller
 
     public function registerSSOCallback(Request $request) {
         $user = auth()->user();
-        Log::info('registerSSOCallback');
 
         if($user->email != null){
             if(BusinessSetting::where('type', 'email_verification')->first()->value != 1){
