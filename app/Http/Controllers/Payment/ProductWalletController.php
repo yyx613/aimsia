@@ -19,7 +19,7 @@ class ProductWalletController extends Controller
 
             (new OrderController)->update_payment_status($request);
         }
-
+        session(['call_order_api' => true]);
         flash(translate("Your order has been placed successfully"))->success();
         return redirect()->route('order_confirmed');
     }

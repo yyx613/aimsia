@@ -18,6 +18,7 @@ use App\Utility\PayhereUtility;
 use App\Utility\NotificationUtility;
 use Session;
 use Auth;
+use Log;
 
 class CheckoutController extends Controller
 {
@@ -358,6 +359,36 @@ class CheckoutController extends Controller
     public function order_confirmed()
     {
         $combined_order = CombinedOrder::findOrFail(Session::get('combined_order_id'));
+
+        if (session()->has('call_order_api')) {
+            $customer_info = json_decode($combined_order->orders[0]->shipping_address);
+    
+            $form = [
+                "extern_id" => $combined_order->id,
+                "orderkey" => $combined_order->orders[0]->code,
+                "customeremail" => $customer_info->email,
+                "customername" => $customer_info->name,
+                "customerphone" => $customer_info->phone,
+                "customeraddress" => $customer_info->address . ', ' . $customer_info->city . ', ' . $customer_info->postal_code . ', ' . $customer_info->state,
+            ];
+    
+            $order_details = $combined_order->orders()->first()->orderDetails;
+            for ($i=0; $i < count($order_details); $i++) { 
+                $form['orderdetail'][] = [
+                    "extern_id" => $order_details[$i]['product_id'],
+                    "platform_id" => config('aimsia.platform_id'),
+                    "quantity" => $order_details[$i]['quantity']
+                ];
+            }
+    
+            $api = new AimsiaApi();
+            $res = $api->sendRequest('POST', '/manage/order', $form);
+
+            if (isset($res->result) && $res->result == true) {
+                session()->forget('call_order_api');
+            }
+        }
+
 
         Cart::where('user_id', $combined_order->user_id)
                 ->delete();
