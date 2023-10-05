@@ -234,6 +234,29 @@ class LoginController extends Controller
             'phone'    => 'required_without:email',
             'password' => 'required|string',
         ]);
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        if ($request->get('phone') != null) {
+            return ['phone' => "+{$request['country_code']}{$request['phone']}", 'password' => $request->get('password')];
+        } elseif ($request->get('email') != null) {
+            return $request->only($this->username(), 'password');
+        }
+    }
+
+    protected function login(Request $request) {
+        $request->validate([
+            'email'    => 'required_without:phone',
+            'phone'    => 'required_without:email',
+            'password' => 'required|string',
+        ]);
 
         // Login user through api
         if ($request->email == null && $request->phone != null) {
@@ -241,7 +264,7 @@ class LoginController extends Controller
         }
         $api = new AimsiaApi();
         $res = $api->sendRequest('POST', '/login', $request->all());
-        session(['sso_auth' => $request->all()]);
+        // session(['sso_auth' => $request->all()]);
 
         if (isset($res->result) && $res->result == false && !isset($res->user)) {
             flash(translate($res->message))->error();
@@ -293,21 +316,12 @@ class LoginController extends Controller
                 'email_verified_at' => $res->user->email_verified_at
             ]);
         }
-    }
 
-    /**
-     * Get the needed authorization credentials from the request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array
-     */
-    protected function credentials(Request $request)
-    {
-        if ($request->get('phone') != null) {
-            return ['phone' => "+{$request['country_code']}{$request['phone']}", 'password' => $request->get('password')];
-        } elseif ($request->get('email') != null) {
-            return $request->only($this->username(), 'password');
-        }
+        $user = User::where('email', $request->email)->first();
+        Auth::loginUsingId($user->id);
+
+        $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode($request->input('email')).'/'.base64_encode($request->input('password')).'/'.base64_encode(config('app.url').'/sso/login/callback');
+        return Redirect::away($url);
     }
 
     /**

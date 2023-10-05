@@ -212,7 +212,7 @@
                                 <span class="opacity-70 ml-1">/{{ $detailedProduct->getTranslation('unit') }}</span>
                             @endif
                             <!-- Discount percentage -->
-                            @if(discount_in_percentage($detailedProduct) > 0)
+                            @if(discount_in_percentage($detailedProduct) > 0 && false)
                                 <span class="bg-primary ml-2 fs-11 fw-700 text-white w-35px text-center p-1" style="padding-top:2px;padding-bottom:2px;">-{{discount_in_percentage($detailedProduct)}}%</span>
                             @endif
                             <!-- Club Point -->
@@ -359,7 +359,7 @@
                                     $qty += $stock->qty;
                                 }
                             @endphp
-                            <div class="avialable-amount opacity-60">
+                            <div class="avialable-amount opacity-60" style="display: none;">
                                 @if($detailedProduct->stock_visibility_state == 'quantity')
                                 (<span id="available-quantity">{{ $qty }}</span> {{ translate('available')}})
                                 @elseif($detailedProduct->stock_visibility_state == 'text' && $qty >= 1)

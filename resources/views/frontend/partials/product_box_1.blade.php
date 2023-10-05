@@ -31,7 +31,7 @@
                 onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
         </a>
         <!-- Discount percentage tag -->
-        @if(discount_in_percentage($product) > 0)
+        @if(discount_in_percentage($product) > 0 && false)
             <span class="absolute-top-left bg-primary ml-1 mt-1 fs-11 fw-700 text-white w-35px text-center" style="padding-top:2px;padding-bottom:2px;">-{{discount_in_percentage($product)}}%</span>
         @endif
         <!-- Wholesale tag -->
