@@ -39,6 +39,8 @@
                             src="https://player.vimeo.com/video/{{ explode('vimeo.com/', $detailedProduct->video_link)[1] }}"
                             width="500" height="281" frameborder="0" webkitallowfullscreen
                             mozallowfullscreen allowfullscreen></iframe>
+                    @elseif ($detailedProduct->video_provider == null && $detailedProduct->video_link != null)
+                        <video src="{{ uploaded_asset($detailedProduct->video_link) }}" controls></video>
                     @endif
                 </div>
             </div>

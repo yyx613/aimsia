@@ -152,20 +152,17 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-md-3 col-from-label">{{translate('Video Provider')}}</label>
+                            <label class="col-md-3 col-form-label" for="signinSrEmail">{{translate('Video')}}</label>
                             <div class="col-md-8">
-                                <select class="form-control aiz-selectpicker" name="video_provider" id="video_provider">
-                                    <option value="youtube">{{translate('Youtube')}}</option>
-                                    <option value="dailymotion">{{translate('Dailymotion')}}</option>
-                                    <option value="vimeo">{{translate('Vimeo')}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-md-3 col-from-label">{{translate('Video Link')}}</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="video_link" placeholder="{{ translate('Video Link') }}">
-                                <small class="text-muted">{{translate("Use proper link without extra parameter. Don't use short share link/embeded iframe code.")}}</small>
+                                <div class="input-group" data-toggle="aizuploader" data-type="video" data-multiple="true">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
+                                    </div>
+                                    <div class="form-control file-amount">{{ translate('Choose File') }}</div>
+                                    <input type="hidden" name="video_link" class="selected-files">
+                                </div>
+                                <div class="file-preview box sm">
+                                </div>
                             </div>
                         </div>
                     </div>
