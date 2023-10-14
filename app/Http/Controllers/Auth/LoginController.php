@@ -319,8 +319,8 @@ class LoginController extends Controller
 
         $user = User::where('email', $request->email)->first();
         Auth::loginUsingId($user->id);
-
-        $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode($request->input('email')).'/'.base64_encode($request->input('password')).'/'.base64_encode(config('app.url').'/sso/login/callback');
+        
+        $url = config('aimsia.api_url') . '/sso/multilogin/'. $api->url_encode($request->input('email')).'/'.$api->url_encode($request->input('password')).'/'.$api->url_encode(config('app.url').'/sso/login/callback');
         return Redirect::away($url);
     }
 
@@ -330,14 +330,16 @@ class LoginController extends Controller
      */
     public function authenticated()
     {
-        $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode(session('sso_auth')['email']).'/'.base64_encode(session('sso_auth')['password']).'/'.base64_encode(config('app.url').'/sso/login/callback');
-        return Redirect::away($url);
+        // $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode(session('sso_auth')['email']).'/'.base64_encode(session('sso_auth')['password']).'/'.base64_encode(config('app.url').'/sso/login/callback');
+        // return Redirect::away($url);
     }
 
     public function loginSSO($email, $password) {
         try {
-            $email = base64_decode($email);
-            $password = base64_decode($password);
+            $api = new AimsiaApi();
+
+            $email = $api->url_encode($email);
+            $password = $api->url_encode($password);
             $form = [
                 'email' => $email,
                 'password' => $password
@@ -432,7 +434,7 @@ class LoginController extends Controller
             if (session('link') != null) {
                 return redirect(session('link'));
             } else {
-                return redirect()->route('dashboard');
+                return redirect()->route('home');
             }
         }
     }
@@ -459,7 +461,9 @@ class LoginController extends Controller
      */
     public function logout()
     {
-        $url = config('aimsia.api_url') . '/sso/multilogout/' . base64_encode(config('app.url').'/sso/logout/callback');
+        $api = new AimsiaApi();
+
+        $url = config('aimsia.api_url') . '/sso/multilogout/' . $api->url_encode(config('app.url').'/sso/logout/callback');
         return Redirect::away($url);
     }
 

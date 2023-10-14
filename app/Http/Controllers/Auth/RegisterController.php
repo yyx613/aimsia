@@ -161,7 +161,7 @@ class RegisterController extends Controller
 
         $this->guard()->login($user);
 
-        $url = config('aimsia.api_url') . '/sso/multilogin/'.base64_encode($request->email).'/'.base64_encode($request->password).'/'.base64_encode(config('app.url').'/sso/register/callback');
+        $url = config('aimsia.api_url') . '/sso/multilogin/'.$api->url_encode($request->email).'/'.$api->url_encode($request->password).'/'.$api->url_encode(config('app.url').'/sso/register/callback');
         return Redirect::away($url);
     }
 

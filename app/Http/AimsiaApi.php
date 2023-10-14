@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AimsiaApi {
     const ACCESS_TOKEN_SESSION_KEY = 'access_token';
+    private const SECRET_KEY = '526480ee7d4dfd45ac933240a4aa8f97caa6e1821678549fea6fffcbd816eab7';
+    private const SECRET_IV = 'Ka2]@VXm8P3N.csn';
+    private const ENCRYPT_METHOD = 'AES-256-CBC';
 
     public function sendRequest($method, $endpoint, $form):object {
         if (Session::has(self::ACCESS_TOKEN_SESSION_KEY)) {
@@ -83,5 +86,27 @@ class AimsiaApi {
             Log::error($th->getMessage());
             return null;
         }
+    }
+
+    public function url_encode($data) {
+        $key = self::SECRET_KEY;
+        $iv = self::SECRET_IV;
+        $method = self::ENCRYPT_METHOD;
+        $options = 0;
+
+        $encryptedData = openssl_encrypt($data, $method, $key, $options,$iv);
+        
+        return base64_encode($encryptedData);
+    }
+
+    public function url_decode($encryptedData) {
+        $key = self::SECRET_KEY;
+        $iv = self::SECRET_IV;
+        $method = self::ENCRYPT_METHOD;
+        $options = 0;
+        
+        $decryptedData = openssl_decrypt(base64_decode($encryptedData), $method, $key, $options, $iv);
+
+        return $decryptedData;
     }
 }
