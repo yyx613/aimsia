@@ -338,8 +338,8 @@ class LoginController extends Controller
         try {
             $api = new AimsiaApi();
 
-            $email = $api->url_encode($email);
-            $password = $api->url_encode($password);
+            $email = $api->url_decode($email);
+            $password = $api->url_decode($password);
             $form = [
                 'email' => $email,
                 'password' => $password
