@@ -27,7 +27,8 @@
         <!-- Video -->
         <div class="tab-pane fade" id="tab_default_2">
             <div class="py-5">
-                <div class="embed-responsive embed-responsive-16by9">
+                <!-- <div class="embed-responsive embed-responsive-16by9"> -->
+                <div>
                     @if ($detailedProduct->video_provider == 'youtube' && isset(explode('=', $detailedProduct->video_link)[1]))
                         <iframe class="embed-responsive-item"
                             src="https://www.youtube.com/embed/{{ get_url_params($detailedProduct->video_link, 'v') }}"></iframe>
@@ -39,8 +40,22 @@
                             src="https://player.vimeo.com/video/{{ explode('vimeo.com/', $detailedProduct->video_link)[1] }}"
                             width="500" height="281" frameborder="0" webkitallowfullscreen
                             mozallowfullscreen allowfullscreen></iframe>
-                    @elseif ($detailedProduct->video_provider == null && $detailedProduct->video_link != null)
-                        <video src="{{ uploaded_asset($detailedProduct->video_link) }}" controls></video>
+                    @endif
+                </div>
+                <div>
+                    @if ($detailedProduct->video_provider == null && $detailedProduct->video_link != null)
+                        @php
+                            $titles = explode(',', $detailedProduct->video_title);
+                            $links = explode(',', $detailedProduct->video_link);
+                        @endphp
+                        @foreach ($links as $key => $link)
+                            <div class="mb-4">
+                                @if(isset($titles[$key]))
+                                    <h6 class="fs-16 fw-700 mb-2">{{ $titles[$key] }}</h6>
+                                @endif
+                                <video src="{{ uploaded_asset($link) }}" controls style="width: 100%;"></video>
+                            </div>
+                        @endforeach
                     @endif
                 </div>
             </div>
