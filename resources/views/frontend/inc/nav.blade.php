@@ -506,6 +506,7 @@
                 </span>
                 <!-- Name -->
                 <h4 class="h5 fs-14 fw-700 text-dark ml-2 mb-0">{{ Auth::user()->name }}</h4>
+                <a href="https://panel.aimsia.com" class="fs-14 fw-700 text-dark ml-2 mb-0 border border-dark px-2 rounded">Panel</a>
             </span>
         @else
             <!--Login & Registration -->
@@ -522,7 +523,7 @@
         @endauth
         <hr>
         <ul class="mb-0 pl-3 pb-3 h-100">
-            @if (get_setting('header_menu_labels') != null)
+            @if (false)
                 @foreach (json_decode( get_setting('header_menu_labels'), true) as $key => $value)
                 <li class="mr-0">
                     <a href="{{ json_decode( get_setting('header_menu_links'), true)[$key] }}" 
@@ -533,9 +534,34 @@
                 </li>
                 @endforeach
             @endif
+            <li class="mr-0">
+                @if (Request::url() == 'https://shop.aimsia.com')
+                    <div style="height: 50px; background-color: white;">
+                        <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%;">
+                    </div>
+                @else
+                    <a href="https://shop.aimsia.com">
+                        <div style="height: 45px;" class="rounded bg-secondary">
+                            <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%;">
+                        </div>
+                    </a>
+                @endif
+            </li>
+            <li class="mr-0">
+                @if (Request::url() == 'https://aimsia.com')
+                    <div style="height: 50px; background-color: white;">
+                        <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%;">
+                    </div>
+                @else
+                    <a href="https://aimsia.com">
+                        <div style="height: 45px;" class="rounded bg-secondary">
+                            <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%;">
+                        </div>
+                    </a>
+                @endif
+            </li>
             @auth
                 @if(isAdmin())
-                    <hr>
                     <li class="mr-0">
                         <a href="{{ route('admin.dashboard') }}" 
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links">
@@ -543,7 +569,6 @@
                         </a>
                     </li>
                 @else
-                    <hr>
                     <li class="mr-0">
                         <a href="{{ route('dashboard') }}" 
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
@@ -553,7 +578,7 @@
                     </li>
                 @endif
                 @if(isCustomer())
-                    <li class="mr-0">
+                    <!-- <li class="mr-0">
                         <a href="{{ route('all-notifications') }}" 
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
                             {{ areActiveRoutes(['all-notifications'],' active')}}">
@@ -573,6 +598,32 @@
                             {{ areActiveRoutes(['compare'],' active')}}">
                             {{ translate('Compare') }}
                         </a>
+                    </li> -->
+                    <li class="mr-0">
+                        @if (Request::url() == 'https://shop.aimsia.com')
+                            <div style="height: 50px; background-color: white;">
+                                <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%; width: 100%;">
+                            </div>
+                        @else
+                            <a href="https://shop.aimsia.com">
+                                <div style="height: 50px;">
+                                    <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%; width: 100%;">
+                                </div>
+                            </a>
+                        @endif
+                    </li>
+                    <li class="mr-0">
+                        @if (Request::url() == 'https://aimsia.com')
+                            <div style="height: 50px; background-color: white;">
+                                <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%; width: 100%;">
+                            </div>
+                        @else
+                            <a href="https://aimsia.com">
+                                <div style="height: 50px;">
+                                    <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%; width: 100%;">
+                                </div>
+                            </a>
+                        @endif
                     </li>
                 @endif
                 <hr>
