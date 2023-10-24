@@ -454,7 +454,7 @@
                                         <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%; width: 100%;">
                                     </div>
                                 @else
-                                    <a href="">
+                                    <a href="https://aimsia.com">
                                         <div style="height: 50px;">
                                             <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%; width: 100%;">
                                         </div>
