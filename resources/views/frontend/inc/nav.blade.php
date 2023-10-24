@@ -436,8 +436,8 @@
                         </ul>
                         <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
                             <li class="list-inline-item mr-0 animate-underline-white">
-                                @if (Request::url() == 'https://shop.aimsia.com')
-                                    <div style="height: 50px;">
+                                @if (Request::url() != 'https://shop.aimsia.com')
+                                    <div style="height: 50px; background-color: white;">
                                         <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%; width: 100%;">
                                     </div>
                                 @else
@@ -450,7 +450,7 @@
                             </li>
                             <li class="list-inline-item mr-0 animate-underline-white">
                                 @if (Request::url() == 'https://aimsia.com')
-                                    <div style="height: 50px;">
+                                    <div style="height: 50px; background-color: white;">
                                         <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%; width: 100%;">
                                     </div>
                                 @else
