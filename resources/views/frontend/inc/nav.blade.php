@@ -535,28 +535,28 @@
                 @endforeach
             @endif
             <li class="mr-0">
-                @if (Request::url() == 'https://shop.aimsia.com')
+                @if (Request::url() != 'https://shop.aimsia.com')
                     <a href="https://shop.aimsia.com">
-                        <div style="height: 45px;" class="rounded bg-secondary">
-                            <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%;">
+                        <div style="height: 45px; background-color: white;">
+                            <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%;">
                         </div>
                     </a>
                 @else
-                    <div style="height: 50px; background-color: white;">
-                        <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%;">
+                    <div style="height: 45px;" class="rounded bg-secondary">
+                        <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%;">
                     </div>
                 @endif
             </li>
             <li class="mr-0">
-                @if (Request::url() == 'https://aimsia.com')
+                @if (Request::url() != 'https://aimsia.com')
                     <a href="https://aimsia.com">
-                        <div style="height: 45px;" class="rounded bg-secondary">
-                            <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%;">
+                        <div style="height: 45px; background-color: white;">
+                            <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%;">
                         </div>
                     </a>
                 @else
-                    <div style="height: 50px; background-color: white;">
-                        <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%;">
+                    <div style="height: 45px;" class="rounded bg-secondary">
+                        <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%;">
                     </div>
                 @endif
             </li>
