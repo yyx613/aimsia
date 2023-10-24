@@ -128,13 +128,15 @@
                 <div class="text-center text-sm-left mt-4">
                     <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3">{{ translate('Contacts') }}</h4>
                     <ul class="list-unstyled">
-                        <li class="mb-2">
+                        <!-- <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Address') }}</p>
                             <p  class="fs-13 text-soft-light">{{ get_setting('contact_address',null,App::getLocale()) }}</p>
-                        </li>
+                        </li> -->
                         <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Phone') }}</p>
-                            <p  class="fs-13 text-soft-light">{{ get_setting('contact_phone') }}</p>
+                            <p  class="">
+                                <a href="tel:{{ get_setting('contact_phone') }}" class="fs-13 text-soft-light hov-text-primary">{{ get_setting('contact_phone')  }}</a>
+                            </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Email') }}</p>
@@ -443,7 +445,7 @@
 </footer>
 
 <!-- Mobile bottom nav -->
-<div class="aiz-mobile-bottom-nav d-xl-none fixed-bottom border-top border-sm-bottom border-sm-left border-sm-right mx-auto mb-sm-2" style="background-color: rgb(255 255 255 / 90%)!important;">
+<div class="aiz-mobile-bottom-nav d-xl-none fixed-bottom border-top border-sm-bottom border-sm-left border-sm-right mx-auto mb-sm-2" style="background-color: rgb(255 255 255 / 90%)!important; display: none;">
     <div class="row align-items-center gutters-5">
         <!-- Home -->
         <div class="col">

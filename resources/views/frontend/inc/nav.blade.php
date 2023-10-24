@@ -261,6 +261,7 @@
                             </span>
                             <!-- Name -->
                             <h4 class="h5 fs-14 fw-700 text-dark ml-2 mb-0">{{ Auth::user()->name }}</h4>
+                            <a href="https://panel.aimsia.com" class="fs-14 fw-700 text-dark ml-2 mb-0 border border-dark px-2 rounded">Panel</a>
                         </span>
                     @else
                         <!--Login & Registration -->
@@ -420,7 +421,7 @@
                 <!-- Header Menus -->
                 <div class="ml-xl-4 w-100 overflow-hidden">
                     <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
-                        <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
+                        <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light" style="display: none;">
                             @if (get_setting('header_menu_labels') != null)
                                 @foreach (json_decode( get_setting('header_menu_labels'), true) as $key => $value)
                                 <li class="list-inline-item mr-0 animate-underline-white">
@@ -432,6 +433,34 @@
                                 </li>
                                 @endforeach
                             @endif
+                        </ul>
+                        <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
+                            <li class="list-inline-item mr-0 animate-underline-white">
+                                @if (Request::url() == 'https://shop.aimsia.com')
+                                    <div style="height: 50px;">
+                                        <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%; width: 100%;">
+                                    </div>
+                                @else
+                                    <a href="https://shop.aimsia.com">
+                                        <div style="height: 50px;">
+                                            <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%; width: 100%;">
+                                        </div>
+                                    </a>
+                                @endif
+                            </li>
+                            <li class="list-inline-item mr-0 animate-underline-white">
+                                @if (Request::url() == 'https://aimsia.com')
+                                    <div style="height: 50px;">
+                                        <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%; width: 100%;">
+                                    </div>
+                                @else
+                                    <a href="">
+                                        <div style="height: 50px;">
+                                            <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%; width: 100%;">
+                                        </div>
+                                    </a>
+                                @endif
+                            </li>
                         </ul>
                     </div>
                 </div>
