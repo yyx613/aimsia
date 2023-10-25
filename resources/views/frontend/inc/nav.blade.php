@@ -434,34 +434,6 @@
                                 @endforeach
                             @endif
                         </ul>
-                        <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
-                            <li class="list-inline-item mr-0 animate-underline-white">
-                                @if (Request::url() == 'https://shop.aimsia.com')
-                                    <div style="height: 50px; background-color: white;">
-                                        <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%; width: 100%;">
-                                    </div>
-                                @else
-                                    <a href="https://shop.aimsia.com">
-                                        <div style="height: 50px;">
-                                            <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%; width: 100%;">
-                                        </div>
-                                    </a>
-                                @endif
-                            </li>
-                            <li class="list-inline-item mr-0 animate-underline-white">
-                                @if (Request::url() == 'https://aimsia.com')
-                                    <div style="height: 50px; background-color: white;">
-                                        <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%; width: 100%;">
-                                    </div>
-                                @else
-                                    <a href="https://aimsia.com">
-                                        <div style="height: 50px;">
-                                            <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%; width: 100%;">
-                                        </div>
-                                    </a>
-                                @endif
-                            </li>
-                        </ul>
                     </div>
                 </div>
                 <!-- Cart -->
@@ -534,32 +506,7 @@
                 </li>
                 @endforeach
             @endif
-            <li class="mr-0">
-                @if (Request::url() != 'https://shop.aimsia.com')
-                    <a href="https://shop.aimsia.com">
-                        <div style="height: 45px; background-color: white;">
-                            <img src="{{ static_asset('assets/img/website-title/PW img-09.png') }}" alt="" style="height: 100%;">
-                        </div>
-                    </a>
-                @else
-                    <div style="height: 45px;" class="rounded bg-secondary">
-                        <img src="{{ static_asset('assets/img/website-title/PW img-01.png') }}" alt="" style="height: 100%;">
-                    </div>
-                @endif
-            </li>
-            <li class="mr-0">
-                @if (Request::url() != 'https://aimsia.com')
-                    <a href="https://aimsia.com">
-                        <div style="height: 45px; background-color: white;">
-                            <img src="{{ static_asset('assets/img/website-title/PW img-10.png') }}" alt="" style="height: 100%;">
-                        </div>
-                    </a>
-                @else
-                    <div style="height: 45px;" class="rounded bg-secondary">
-                        <img src="{{ static_asset('assets/img/website-title/PW img-08.png') }}" alt="" style="height: 100%;">
-                    </div>
-                @endif
-            </li>
+            
             @auth
                 @if(isAdmin())
                     <li class="mr-0">
