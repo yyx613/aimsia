@@ -264,10 +264,12 @@ class LoginController extends Controller
         }
         $api = new AimsiaApi();
         $res = $api->sendRequest('POST', '/login', $request->all());
-        // session(['sso_auth' => $request->all()]);
 
         if (isset($res->result) && $res->result == false && !isset($res->user)) {
             flash(translate($res->message))->error();
+            throw ValidationException::withMessages((array)$res->message);
+        } else if (isset($res->user->type) && $res->user->type == 0) {
+            flash(translate('You are not allowed to login'))->error();
             throw ValidationException::withMessages((array)$res->message);
         }
 
