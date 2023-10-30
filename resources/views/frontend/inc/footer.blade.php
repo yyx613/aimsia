@@ -130,7 +130,9 @@
                     <ul class="list-unstyled">
                         <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Address') }}</p>
-                            <p  class="fs-13 text-soft-light">{{ get_setting('contact_address',null,App::getLocale()) }}</p>
+                            <p  class="">
+                                <a href="https://www.google.com/maps/place/Wisma+Academy,+4,+Jalan+19%2F1,+Seksyen+19,+46300+Petaling+Jaya,+Selangor/@3.1160735,101.6239111,17z/data=!3m1!4b1!4m10!1m2!2m1!1sUnit+L2-05,+Wisma+academy,+No+4A,+jalan+19%2F1,+46300+Petaling+Jaya.+Selangor!3m6!1s0x31cc4959bbfd5317:0x89c45ebd2a7f09bd!8m2!3d3.1160735!4d101.6287767!15sCktVbml0IEwyLTA1LCBXaXNtYSBhY2FkZW15LCBObyA0QSwgamFsYW4gMTkvMSwgNDYzMDAgUGV0YWxpbmcgSmF5YS4gU2VsYW5nb3KSARFjb21wb3VuZF9idWlsZGluZ-ABAA!16s%2Fg%2F11hj5xxxxs?entry=ttu" class="fs-13 text-soft-light hov-text-primary" target="_blank">{{ get_setting('contact_address',null,App::getLocale()) }}</a>
+                            </p>
                         </li>
                         <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Phone') }}</p>
