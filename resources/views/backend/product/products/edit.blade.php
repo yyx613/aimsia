@@ -186,15 +186,9 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
-                            <label class="col-lg-3 col-from-label">{{translate('Video title')}}</label>
-                            <div class="col-lg-8">
-                                <input type="text" class="form-control aiz-tag-input" name="video_title[]" id="video_title" value="{{ $product->video_title }}" placeholder="{{ translate('Type to add a video title') }}" data-role="tagsinput">
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-md-3 col-form-label" for="signinSrEmail">{{translate('Video')}}</label>
                             <div class="col-md-8">
-                                <div class="input-group" data-toggle="aizuploader" data-type="video" data-multiple="true">
+                                <div class="input-group" data-toggle="aizuploader" data-type="video">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text bg-soft-secondary font-weight-medium">{{ translate('Browse')}}</div>
                                     </div>

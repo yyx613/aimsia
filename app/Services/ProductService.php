@@ -32,14 +32,6 @@ class ProductService
         }
         $collection['tags'] = implode(',', $tags);
 
-        $video_titles = array();
-        if ($collection['video_title'][0] != null) {
-            foreach (json_decode($collection['video_title'][0]) as $key => $title) {
-                array_push($video_titles, $title->value);
-            }
-        }
-        $collection['video_title'] = implode(',', $video_titles);
-        
         $discount_start_date = null;
         $discount_end_date   = null;
         if ($collection['date_range'] != null) {
@@ -189,14 +181,6 @@ class ProductService
             }
         }
         $collection['tags'] = implode(',', $tags);
-
-        $video_titles = array();
-        if ($collection['video_title'][0] != null) {
-            foreach (json_decode($collection['video_title'][0]) as $key => $title) {
-                array_push($video_titles, $title->value);
-            }
-        }
-        $collection['video_title'] = implode(',', $video_titles);
 
         $discount_start_date = null;
         $discount_end_date   = null;
