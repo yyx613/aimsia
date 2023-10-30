@@ -128,10 +128,10 @@
                 <div class="text-center text-sm-left mt-4">
                     <h4 class="fs-14 text-secondary text-uppercase fw-700 mb-3">{{ translate('Contacts') }}</h4>
                     <ul class="list-unstyled">
-                        <!-- <li class="mb-2">
+                        <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Address') }}</p>
                             <p  class="fs-13 text-soft-light">{{ get_setting('contact_address',null,App::getLocale()) }}</p>
-                        </li> -->
+                        </li>
                         <li class="mb-2">
                             <p  class="fs-13 text-secondary mb-1">{{ translate('Phone') }}</p>
                             <p  class="">
